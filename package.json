@@ -1,0 +1,33 @@
+{
+    "name": "rage-analytics-dashboard",
+    "version": "1.0.0",
+    "description": "Dashboard analytics generator for Rage Web - PDF reports for client retention and sales",
+    "type": "module",
+    "scripts": {
+        "start": "node src/server.js",
+        "dev:web": "nodemon src/server.js",
+        "generate": "node src/generate-dashboard.js",
+        "test-connection": "node src/test-connection.js",
+        "dev": "node --watch src/generate-dashboard.js"
+    },
+    "dependencies": {
+        "@supabase/supabase-js": "^2.45.0",
+        "cors": "^2.8.6",
+        "dayjs": "^1.11.10",
+        "dotenv": "^16.4.5",
+        "express": "^5.2.1",
+        "pdfkit": "^0.15.0"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.0"
+    },
+    "keywords": [
+        "analytics",
+        "dashboard",
+        "pdf",
+        "supabase",
+        "rage-web"
+    ],
+    "author": "Rage Studios",
+    "license": "MIT"
+}
