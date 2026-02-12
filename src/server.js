@@ -334,24 +334,26 @@ app.get(/^\/(?!api).*/, (req, res) => {
     res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-// Iniciar servidor
-app.listen(PORT, () => {
-    console.log('');
-    console.log('╔══════════════════════════════════════════════════════════╗');
-    console.log('║         RAGE ANALYTICS - DASHBOARD WEB                   ║');
-    console.log('╚══════════════════════════════════════════════════════════╝');
-    console.log('');
-    console.log(`🚀 Servidor corriendo en: http://localhost:${PORT}`);
-    console.log('');
-    console.log('📊 Endpoints disponibles:');
-    console.log('   POST /api/analytics/retention');
-    console.log('   POST /api/analytics/sales');
-    console.log('   POST /api/analytics/top-buyers');
-    console.log('   POST /api/analytics/dormant');
-    console.log('   POST /api/analytics/compare');
-    console.log('   POST /api/generate-pdf');
-    console.log('   GET  /api/reports');
-    console.log('');
-});
+// Iniciar servidor (solo en entorno local, no en Vercel)
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log('');
+        console.log('╔══════════════════════════════════════════════════════════╗');
+        console.log('║         RAGE ANALYTICS - DASHBOARD WEB                   ║');
+        console.log('╚══════════════════════════════════════════════════════════╝');
+        console.log('');
+        console.log(`🚀 Servidor corriendo en: http://localhost:${PORT}`);
+        console.log('');
+        console.log('📊 Endpoints disponibles:');
+        console.log('   POST /api/analytics/retention');
+        console.log('   POST /api/analytics/sales');
+        console.log('   POST /api/analytics/top-buyers');
+        console.log('   POST /api/analytics/dormant');
+        console.log('   POST /api/analytics/compare');
+        console.log('   POST /api/generate-pdf');
+        console.log('   GET  /api/reports');
+        console.log('');
+    });
+}
 
 export default app;
