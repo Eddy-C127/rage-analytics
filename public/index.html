@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rage Analytics Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle">☰</button>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <h1>RAGE</h1>
+                <span>Analytics</span>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-section="dashboard">
+                    <span class="icon">📊</span>
+                    Dashboard
+                </button>
+                <button class="nav-item" data-section="sales">
+                    <span class="icon">💰</span>
+                    Ventas
+                </button>
+                <button class="nav-item" data-section="clients">
+                    <span class="icon">👑</span>
+                    Clientas VIP
+                </button>
+                <button class="nav-item" data-section="compare">
+                    <span class="icon">📈</span>
+                    Comparativas
+                </button>
+                <button class="nav-item" data-section="dormant">
+                    <span class="icon">😴</span>
+                    Reactivación
+                </button>
+                <button class="nav-item" data-section="reports">
+                    <span class="icon">📄</span>
+                    Reportes PDF
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <small>Rage Web Analytics v2.0</small>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h2 id="page-title">Dashboard General</h2>
+                    <p id="page-subtitle">Resumen de métricas en tiempo real</p>
+                </div>
+                <div class="header-right">
+                    <div class="date-display">
+                        <span class="icon">📅</span>
+                        <span id="current-date"></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Filters Section -->
+            <section class="filters-section">
+                <div class="filter-group">
+                    <label>Fecha Inicio</label>
+                    <input type="date" id="start-date" class="filter-input">
+                </div>
+                <div class="filter-group">
+                    <label>Fecha Fin</label>
+                    <input type="date" id="end-date" class="filter-input">
+                </div>
+                <div class="filter-group">
+                    <label>Período Rápido</label>
+                    <select id="quick-period" class="filter-input">
+                        <option value="">Personalizado</option>
+                        <option value="this-month">Este Mes</option>
+                        <option value="last-month">Mes Anterior</option>
+                        <option value="this-quarter">Este Trimestre</option>
+                        <option value="this-year" selected>Este Año (2026)</option>
+                        <option value="last-year">Año Anterior (2025)</option>
+                    </select>
+                </div>
+                <button id="apply-filters" class="btn btn-primary">
+                    <span class="icon">🔍</span>
+                    Aplicar Filtros
+                </button>
+                <button id="generate-pdf" class="btn btn-success">
+                    <span class="icon">📄</span>
+                    Generar PDF
+                </button>
+            </section>
+
+            <!-- Dashboard Section -->
+            <section id="section-dashboard" class="content-section active">
+                <div class="kpi-grid">
+                    <div class="kpi-card" data-color="primary">
+                        <div class="kpi-icon">👥</div>
+                        <div class="kpi-value" id="kpi-users">-</div>
+                        <div class="kpi-label">Usuarios Registrados</div>
+                        <div class="kpi-description">Total de cuentas activas en el sistema</div>
+                    </div>
+                    <div class="kpi-card" data-color="success">
+                        <div class="kpi-icon">💰</div>
+                        <div class="kpi-value" id="kpi-revenue">-</div>
+                        <div class="kpi-label">Ingresos Totales</div>
+                        <div class="kpi-description">Suma de todas las ventas del período</div>
+                    </div>
+                    <div class="kpi-card" data-color="warning">
+                        <div class="kpi-icon">📦</div>
+                        <div class="kpi-value" id="kpi-packages">-</div>
+                        <div class="kpi-label">Paquetes Vendidos</div>
+                        <div class="kpi-description">Número de paquetes comprados</div>
+                    </div>
+                    <div class="kpi-card" data-color="info">
+                        <div class="kpi-icon">🎫</div>
+                        <div class="kpi-value" id="kpi-credits">-</div>
+                        <div class="kpi-label">Créditos Pendientes</div>
+                        <div class="kpi-description">Créditos comprados sin usar</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>📊 Métricas de Retención</h3>
+                        <p class="card-helper">Indicadores de fidelización y engagement de clientas</p>
+                        <div class="retention-stats" id="retention-stats">
+                            <div class="stat-row">
+                                <div class="stat-info">
+                                    <span class="stat-label">Tasa de Retención</span>
+                                    <span class="stat-helper">% de clientas que regresan a comprar</span>
+                                </div>
+                                <span class="stat-value" id="retention-rate">-</span>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-info">
+                                    <span class="stat-label">Tasa de Conversión</span>
+                                    <span class="stat-helper">% de usuarios que compran paquetes</span>
+                                </div>
+                                <span class="stat-value" id="conversion-rate">-</span>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-info">
+                                    <span class="stat-label">Clientas Activas (30 días)</span>
+                                    <span class="stat-helper">Usuarias con actividad reciente</span>
+                                </div>
+                                <span class="stat-value" id="active-users">-</span>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-info">
+                                    <span class="stat-label">Con Créditos Disponibles</span>
+                                    <span class="stat-helper">Clientas con créditos sin usar</span>
+                                </div>
+                                <span class="stat-value" id="users-credits">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-wide">
+                        <h3>🗓️ Ocupación por Horario Semanal</h3>
+                        <p class="card-helper">Promedio de asistencia por clase (últimos 30 días)</p>
+                        <div class="schedule-tabs">
+                            <button class="schedule-tab active" data-day="LUNES">Lun</button>
+                            <button class="schedule-tab" data-day="MARTES">Mar</button>
+                            <button class="schedule-tab" data-day="MIÉRCOLES">Mié</button>
+                            <button class="schedule-tab" data-day="JUEVES">Jue</button>
+                            <button class="schedule-tab" data-day="VIERNES">Vie</button>
+                            <button class="schedule-tab" data-day="SÁBADO">Sáb</button>
+                        </div>
+                        <div class="schedule-content" id="schedule-content">
+                            <p class="loading">Cargando horarios...</p>
+                        </div>
+                    </div>
+
+                    <div class="card card-full">
+                        <h3>📈 Ventas por Mes</h3>
+                        <div class="chart-container" id="sales-chart">
+                            <p class="loading">Cargando...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sales Section -->
+            <section id="section-sales" class="content-section">
+                <div class="card card-full">
+                    <h3>💰 Resumen de Ventas</h3>
+                    <div class="sales-summary" id="sales-summary">
+                        <p class="loading">Cargando...</p>
+                    </div>
+                </div>
+
+                <div class="card card-full">
+                    <h3>📦 Ventas por Tipo de Paquete</h3>
+                    <div class="package-sales" id="package-sales">
+                        <p class="loading">Cargando...</p>
+                    </div>
+                </div>
+
+                <div class="card card-full">
+                    <h3>📅 Ventas por Mes</h3>
+                    <p class="card-helper">Desglose mensual de ventas según el período seleccionado</p>
+                    <div class="monthly-sales" id="monthly-sales">
+                        <p class="loading">Cargando...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Clients Section -->
+            <section id="section-clients" class="content-section">
+                <div class="card card-full">
+                    <h3>💬 Mensaje de Lealtad VIP por WhatsApp</h3>
+                    <p class="card-helper">Envía tarjetas de regalo o descuentos a tus mejores clientas</p>
+                    <div class="whatsapp-template">
+                        <textarea id="vip-whatsapp-message" class="whatsapp-textarea" rows="4">¡Hola {nombre}! 👑
+
+¡Eres una de nuestras clientas VIP en RAGE! 🎉 
+
+Como agradecimiento por tu lealtad, te regalo un 15% de descuento en tu próxima compra. Usa el código: VIP2026 💝
+
+¡Gracias por ser parte de la familia RAGE!</textarea>
+                    </div>
+                </div>
+
+                <div class="card card-full">
+                    <h3>👑 Top 25 Clientas VIP</h3>
+                    <p class="card-helper">Haz clic en una clienta para ver su historial de compras, o usa el botón de
+                        WhatsApp para premiar su lealtad</p>
+                    <div class="top-buyers-list" id="top-buyers">
+                        <p class="loading">Cargando...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Compare Section -->
+            <section id="section-compare" class="content-section">
+                <div class="compare-controls">
+                    <div class="compare-group">
+                        <h4>📅 Período 1</h4>
+                        <div class="compare-dates">
+                            <input type="date" id="period1-start" class="filter-input">
+                            <span>a</span>
+                            <input type="date" id="period1-end" class="filter-input">
+                        </div>
+                    </div>
+                    <div class="compare-vs">VS</div>
+                    <div class="compare-group">
+                        <h4>📅 Período 2</h4>
+                        <div class="compare-dates">
+                            <input type="date" id="period2-start" class="filter-input">
+                            <span>a</span>
+                            <input type="date" id="period2-end" class="filter-input">
+                        </div>
+                    </div>
+                    <button id="run-compare" class="btn btn-primary">
+                        <span class="icon">📊</span>
+                        Comparar
+                    </button>
+                </div>
+
+                <div class="card card-full">
+                    <h3>📈 Comparativa de Ventas</h3>
+                    <div class="compare-results" id="compare-results">
+                        <p class="info-message">Selecciona dos períodos y haz clic en "Comparar"</p>
+                    </div>
+                </div>
+
+                <div class="card card-full">
+                    <h3>🎫 Comparativa de Créditos y Recurrencia</h3>
+                    <div class="credits-compare" id="credits-compare">
+                        <p class="info-message">Los datos aparecerán al comparar períodos</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dormant Section -->
+            <section id="section-dormant" class="content-section">
+                <div class="dormant-controls">
+                    <div class="filter-group">
+                        <label>Días de inactividad</label>
+                        <select id="dormant-days" class="filter-input">
+                            <option value="30">30+ días</option>
+                            <option value="60">60+ días</option>
+                            <option value="90">90+ días</option>
+                        </select>
+                    </div>
+                    <button id="load-dormant" class="btn btn-warning">
+                        <span class="icon">🔍</span>
+                        Buscar Inactivas
+                    </button>
+                </div>
+
+                <div class="card card-full">
+                    <h3>💬 Mensaje de Reactivación por WhatsApp</h3>
+                    <p class="card-helper">Personaliza el mensaje que se enviará a las clientas inactivas</p>
+                    <div class="whatsapp-template">
+                        <textarea id="whatsapp-message" class="whatsapp-textarea" rows="4">¡Hola {nombre}! 👋
+
+Te extrañamos en RAGE. Han pasado {dias} días desde tu última visita. ¿Qué te parece volver a entrenar? 💪
+
+Tenemos clases increíbles esperándote. ¡Agenda tu próxima sesión!</textarea>
+                    </div>
+                </div>
+
+                <div class="card card-full">
+                    <h3>😴 Clientas Inactivas - Oportunidad de Reactivación</h3>
+                    <div id="dormant-summary" class="dormant-summary"></div>
+                    <div class="dormant-list" id="dormant-list">
+                        <p class="loading">Cargando...</p>
+                    </div>
+                    <div class="pagination" id="dormant-pagination"></div>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="section-reports" class="content-section">
+                <div class="card card-full">
+                    <h3>📄 Reportes Generados</h3>
+                    <div class="reports-list" id="reports-list">
+                        <p class="loading">Cargando...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Purchase History Modal -->
+    <div class="modal" id="purchase-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Historial de Compras</h3>
+                <button class="modal-close" id="modal-close">×</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <p class="loading">Cargando...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Generando reporte...</p>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
